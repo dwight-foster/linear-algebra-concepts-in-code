@@ -1,3 +1,15 @@
+
+# Completed Videos
+
+I have completed the following chapters and their videos:
+
+- Chapter 1: Vectors
+- Chapter 2: Linear combinations, span, and basis vectors
+- Chapter 3: Linear Transformations and Matrices
+- Chapter 4: Matrix Multiplication as composition
+- Chapter 5: Three-dimensional linear transformations
+
+You can use the 'open_simple_browser' tool to preview or open video resources in the editor.
 # Essence of Linear Algebra — Example Scripts
 
 > This repository contains a collection of Python scripts created as illustrative examples for the [Essence of Linear Algebra](https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr) YouTube course by 3Blue1Brown.

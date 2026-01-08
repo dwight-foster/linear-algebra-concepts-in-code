@@ -22,6 +22,7 @@ origin = np.zeros(2)
 # Plot basis vectors correctly
 # use columns explicitly and disable quiver auto-scaling so lengths are in data units
 i = basis[:, 0]
+print(i)
 j = basis[:, 1]
 tb = transformed_basis
 tv = A @ orig_vector
