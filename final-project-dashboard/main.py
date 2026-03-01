@@ -4,8 +4,6 @@ st.set_page_config(page_title="Final Project")
 
 st.write("# Welcome to My Linear Algebra Final Project")
 
-st.sidebar.success("Select a page.")
-
 st.markdown(
     """
     This is the streamlit dashboard for my linear algebra final project.
