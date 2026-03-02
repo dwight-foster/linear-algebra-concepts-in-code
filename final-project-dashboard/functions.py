@@ -111,3 +111,15 @@ def compute_determinant(A, tol=1e-12):
         if row == len(A[0]):
             break
     return det
+
+def least_squares(A, b):
+    b_hat = A.T @ b
+    A_square = A.T @ A
+    sol, status = compute_solution(A_square, b_hat)
+    if status == "none":
+        raise ValueError("Normal equations reported inconsistent (should not happen in exact arithmetic).")
+    if status == "unique":
+        x_hat = sol
+    else: 
+        x_hat = sol[:, 0] 
+    return x_hat
