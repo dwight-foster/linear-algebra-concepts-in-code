@@ -145,3 +145,7 @@ def compute_svd(A, tol=1e-12):
     Sigma_r = np.diag(sing_r)
 
     return U_r, Sigma_r, V_r.T
+
+def A_n(S, x, n):
+    X = np.diag(x**n)
+    return S @ X @ np.linalg.inv(S)
