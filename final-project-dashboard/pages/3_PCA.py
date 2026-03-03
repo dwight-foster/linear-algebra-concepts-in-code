@@ -15,18 +15,15 @@ if uploaded_file is None:
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     
-    # Remove non-numerical columns
     df = df.select_dtypes(include=[np.number])
     
     st.write(df)
-    # Convert dataframe to numpy array and standardize
     data = df.values
     data = (data - data.mean(axis=0)) / data.std(axis=0)
     
 U, sigma, V = compute_svd(data)
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 sigma = np.diagonal(sigma)
-# Plot first two principal components
 axes[0].scatter(data @ V[:, 0], data @ V[:, 1], alpha=0.6)
 arrow_scale = 2 * np.max(np.abs(data @ V[:, :2]))
 arrow1 = axes[0].arrow(0, 0, V[0][0] * arrow_scale, V[0][1] * arrow_scale, 
@@ -41,7 +38,6 @@ axes[0].set_ylabel(f"PC2 ({sigma[1]**2 / (sigma**2).sum() * 100:.1f}%)")
 axes[0].set_title("Data projected on first two principal components")
 axes[0].grid(True, alpha=0.3)
 
-# Plot variance explained by each component
 variance_explained = (sigma**2 / (sigma**2).sum()) * 100
 axes[1].bar(range(1, len(variance_explained) + 1), variance_explained)
 axes[1].set_xlabel("Principal Component")
@@ -56,9 +52,7 @@ st.markdown("### Reconstruct Data from Top k Principal Components")
 k = st.slider("Select number of principal components (k)", min_value=1, max_value=min(data.shape), value=2)
 
 if st.button("Reconstruct Data"):
-    # TODO: Perform reconstruction using top k components
     reconstructed_data = U[:, :k] @ np.diag(sigma[:k]) @ V[:, :k].T
     st.write(pd.DataFrame(reconstructed_data, columns=df.columns))
-    # Compare reconstructed data to original standardized data
     st.markdown("### Original data")
     st.write(pd.DataFrame(data, columns=df.columns))
