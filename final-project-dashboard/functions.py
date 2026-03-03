@@ -123,3 +123,25 @@ def least_squares(A, b):
     else: 
         x_hat = sol[:, 0] 
     return x_hat
+
+def compute_svd(A, tol=1e-12):
+    A = A.astype(float)
+
+    ATA = A.T @ A
+    eigvals, V = np.linalg.eigh(ATA)
+
+    idx = np.argsort(eigvals)[::-1]
+    eigvals = eigvals[idx]
+    V = V[:, idx]
+
+    sing = np.sqrt(np.clip(eigvals, 0, None))
+
+    r = np.sum(sing > tol)
+    sing_r = sing[:r]
+    V_r = V[:, :r]
+
+    U_r = (A @ V_r) / sing_r
+
+    Sigma_r = np.diag(sing_r)
+
+    return U_r, Sigma_r, V_r.T
