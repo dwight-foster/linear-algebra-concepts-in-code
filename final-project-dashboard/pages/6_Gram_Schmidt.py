@@ -56,10 +56,29 @@ if st.button("Generate Matrix"):
     
     with tab2:
         st.subheader("Modified Gram-Schmidt")
-        # TODO: Add modified Gram-Schmidt implementation
-        pass
+        Q = A.copy()
+        for i in range(A.shape[1]):
+            Q[:, i] /= np.linalg.norm(Q[:, i])
+            for j in range(i+1, Q.shape[1]):
+                Q[:, j] -= np.dot(Q[:, i].T, Q[:, j]) * Q[:, i]
+
+        st.dataframe(pd.DataFrame(Q, columns=[f"q{i+1}" for i in range(A.shape[1])]))
+        st.subheader("Q$^T$Q - I (should be ~0)")
+        res = Q.T @ Q - np.eye(A.shape[1])
+        st.latex(rf"Q^T Q - I = {np.linalg.norm(res):.2e}")
+
+        R = Q.T @ A
+        st.subheader("Reconstruction Error (||A - QR||)")
+        st.latex(rf"||A - QR|| = {np.linalg.norm(A - Q @ R):.2e}")      
+            
     
     with tab3:
         st.subheader("NumPy QR")
-        # TODO: Add NumPy QR implementation
-        pass
+        Q_np, R_np = np.linalg.qr(A)
+        st.dataframe(pd.DataFrame(Q_np, columns=[f"q{i+1}" for i in range(A.shape[1])]))
+        st.subheader("Q$^T$Q - I (should be ~0)")
+        res_np = Q_np.T @ Q_np - np.eye(A.shape[1])
+        st.latex(rf"Q^T Q - I = {np.linalg.norm(res_np):.2e}")
+
+        st.subheader("Reconstruction Error (||A - QR||)")
+        st.latex(rf"||A - QR|| = {np.linalg.norm(A - Q_np @ R_np):.2e}")
