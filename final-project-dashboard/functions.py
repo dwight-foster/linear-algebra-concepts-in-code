@@ -1,30 +1,40 @@
 import numpy as np
+import numpy as np
 
 def rref(A, tol=1e-12, ignore_last=False):
+    A = A.astype(float).copy()
     pivots = []
     row = 0
-    for c in range(len(A[0])):
-        #check which column has the pivot
-        if c == len(A[0])-1 and ignore_last:
+    m, n = A.shape
+
+    for c in range(n):
+        if ignore_last and c == n - 1:
             continue
+
+        # find pivot row
         pivot = None
-        for r in range(row, len(A)):
+        for r in range(row, m):
             if abs(A[r, c]) > tol:
                 pivot = r
                 break
         if pivot is None:
             continue
+
         if pivot != row:
             A[[row, pivot]] = A[[pivot, row]]
-        A[row] = A[row] / A[row][c]
-        for r in range(len(A)):
+
+        A[row] = A[row] / A[row, c]
+
+        for r in range(m):
             if r != row:
-                A[r] -= A[row] * A[r][c]
-        pivots.append(row)
+                A[r] -= A[row] * A[r, c]
+
+        pivots.append(c)   
         row += 1
-        if row == len(A[0]):
+        if row == m:      
             break
-    A[abs(A) < tol] = 0.0
+
+    A[np.abs(A) < tol] = 0.0
     return A, np.array(pivots)
 
 
@@ -32,12 +42,12 @@ def build_nullspace(R, pivots, tol=1e-12):
     R = R.astype(float)
     m, n = R.shape
     pivots = list(pivots)
+
     free_cols = [j for j in range(n) if j not in pivots]
-    r = len(pivots)
     f = len(free_cols)
 
     if f == 0:
-        return np.zeros((n, 0))  # empty basis
+        return np.zeros((n, 0))
 
     N = np.zeros((n, f))
     for k, free_j in enumerate(free_cols):
@@ -50,10 +60,15 @@ def build_nullspace(R, pivots, tol=1e-12):
     N[np.abs(N) < tol] = 0.0
     return N
 
+
 def compute_solution(A, b, tol=1e-12):
+    A = A.astype(float)
+    b = b.astype(float)
+
     m, n = A.shape
-    Aug = np.column_stack([A.astype(float), b.astype(float)])
-    R_aug, pivots = rref(Aug, tol, True)  
+    Aug = np.column_stack([A, b])
+
+    R_aug, pivots = rref(Aug, tol=tol, ignore_last=True)
     R = R_aug[:, :n]
     rhs = R_aug[:, n]
 
@@ -61,17 +76,16 @@ def compute_solution(A, b, tol=1e-12):
         if np.all(np.abs(R[i]) < tol) and abs(rhs[i]) > tol:
             return np.zeros((n, 0)), "none"
 
-    N = build_nullspace(R, pivots, tol)  
     x_p = np.zeros(n)
     for i, pcol in enumerate(pivots):
-        if pcol < n:         
-            x_p[pcol] = rhs[i]
+        x_p[pcol] = rhs[i]
+
+    N = build_nullspace(R, pivots, tol)
 
     if N.shape[1] == 0:
         return x_p, "unique"
     else:
-        full = np.column_stack([x_p, N])  
-        return full, "infinite"
+        return np.column_stack([x_p, N]), "infinite"
     
 def least_squares(A, b):
     b_hat = A.T @ b
