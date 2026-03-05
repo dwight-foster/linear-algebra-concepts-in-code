@@ -163,3 +163,10 @@ def compute_svd(A, tol=1e-12):
 def A_n(S, x, n):
     X = np.diag(x**n)
     return S @ X @ np.linalg.inv(S)
+
+def generate_spd(n=3, eps=1e-6, seed=None):
+    rng = np.random.default_rng(seed)
+    B = rng.standard_normal((n, n))
+    A = B.T @ B + eps * np.eye(n)
+    return A
+
