@@ -1,6 +1,6 @@
 # Linear Algebra Implementations (MIT OCW / Strang)
 
-This repository is a hands-on implementation project based on Gilbert Strang's linear algebra lectures from MIT OpenCourseWare (18.06SC)[https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/].  
+This repository is a hands-on implementation project based on Gilbert Strang's linear algebra lectures from MIT OpenCourseWare (18.06SC).  
 The goal is to demonstrate practical understanding by coding core concepts from scratch and visualizing them.
 
 ## What This Repo Shows
@@ -78,4 +78,4 @@ python determinants.py
 
 ---
 
-Author: Dwight
+Author: Edward Dwight Foster
