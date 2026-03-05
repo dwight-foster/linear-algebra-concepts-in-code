@@ -16,6 +16,5 @@ st.markdown(
     - Solving: Generate an ill-conditioned matrix and show different solving methods with different results
     - Orthogonality: Using random columns finds the orthogonal matrix using Graham-Schmidt
     - SPD: Generate an SPD and run gradient descent with it to find the minimum and compare to actual minimum via elimination
-    - Convolution: Creates a 1D blur kernel and shows how it blurs a signal 
     """
 )
